@@ -59,7 +59,7 @@ def main():
     if subprocess.check_output([str(core / 'DNF90.Core.exe'), '--build-flavor'], text=True).strip() != flavor:
         raise RuntimeError('Compiled core flavor mismatch')
     flutter = args.flutter / "bin/flutter.bat"
-    run([flutter, "--no-version-check", "--suppress-analytics", "pub", "get", "--offline"], project)
+    run([flutter, "--no-version-check", "--suppress-analytics", "pub", "get"], project)
     run([flutter, "--no-version-check", "--suppress-analytics", "build", "windows", "--release", "--no-pub"], project)
     run([cmake, "-S", ROOT / "launcher/Bootstrap", "-B", bootstrap, "-G", "Visual Studio 17 2022", "-A", "x64", "-DCMAKE_GENERATOR_INSTANCE=" + str(vs)])
     run([cmake, "--build", bootstrap, "--config", "Release"])

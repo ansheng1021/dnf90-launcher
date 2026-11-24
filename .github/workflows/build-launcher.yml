@@ -5,6 +5,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs:
   windows-launcher:
     runs-on: windows-latest
@@ -33,10 +36,12 @@ jobs:
 
       - name: Enable Windows desktop and restore Dart packages
         working-directory: launcher/Flutter
-        shell: cmd
+        shell: pwsh
         run: |
           flutter config --enable-windows-desktop
           flutter pub get
+          if ($LASTEXITCODE -ne 0) { throw "flutter pub get failed" }
+          Get-ChildItem .dart_tool/package_config.json | Select-Object -ExpandProperty FullName
 
       - name: Build launcher bundle
         shell: cmd
@@ -46,11 +51,11 @@ jobs:
         shell: cmd
         run: BUILD_PORTABLE.bat --bundle "dist\PurpleMagic-1.0.12.zip" --output "dist\PurpleMagic.exe" --dotnet dotnet
 
-      - name: Show build receipt
+      - name: Show build receipts
         shell: cmd
         run: |
-          type runtime\flutter-build\build-receipt.json
-          type runtime\flutter-build\portable-receipt.json
+          if exist runtime\flutter-build\build-receipt.json type runtime\flutter-build\build-receipt.json
+          if exist runtime\flutter-build\portable-receipt.json type runtime\flutter-build\portable-receipt.json
 
       - name: Upload launcher artifacts
         uses: actions/upload-artifact@v4
@@ -61,3 +66,16 @@ jobs:
             dist\PurpleMagic-1.0.12.zip
             dist\PurpleMagic.exe
             dist\PurpleMagic.exe.sha256
+
+      - name: Publish release assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: launcher-v1.0.12
+          name: PurpleMagic launcher 1.0.12
+          body: |
+            PurpleMagic Windows launcher built from launcher source v1.0.12,
+            pointed at this deployment through the embedded player profile.
+          files: |
+            dist/PurpleMagic.exe
+            dist/PurpleMagic-1.0.12.zip
+            dist/PurpleMagic.exe.sha256
