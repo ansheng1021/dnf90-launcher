@@ -1,0 +1,13 @@
+{
+  "ApiUrl": "https://62.234.38.71:8443",
+  "GameHost": "62.234.38.71",
+  "BootstrapPort": 7001,
+  "ChannelServerId": 0,
+  "MinimumLauncherVersion": "0.2.18",
+  "DefaultClientDirectory": "",
+  "CertificateSha256": "e62f7b939bc3a4649538353e25a032974eb4f64f7520ab7080fd1dd598e48881",
+  "UpdatePublicKey": "-----BEGIN PUBLIC KEY-----\nMIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAp7XVHmZema1vBoCQvzbp\nuoCGvjkgFd/taVeoL4pKQ+cLakJUMum4GSzUSximVOBM+SDzCEhKLDenkqZS2Rzw\nekfENsOBVFhxp69ugcPSgEURoVBRN3rqW1rPKV89sVwsAXILNJjA3cg2g+7vddEJ\nsURZNGEN6E5mwV8jrt9iOwYfhvDcVwIFLiOu1z6jJSMfqgGn/920YCDOA99tAcxr\nVF+t2iS1JQEZtmp+rSpDUk272AmT/vWk9PvRtwkr2Ga0g2qauukce2H2ZJFt1Rgz\nRYzf4vajYqUeaL4AE65CfxrTVU0Z9//IqofCU5hfD5MIU8lOr/Xc8nDtbH3cDixb\nxfYbs50WwjLC4VSGEzdvjuBnrcbXE1v0PLkk7I/ZuGI7yUGuAmvSDfLUUrp0qJcf\nfje6q+TzbtwdS2q1feZ/3nrL1vAIs/WkHdMLekH7EQBSjrmZs/xfHoq2ZGefV78R\na7lggHCa+QZEQEkLhJy2AXLrVeMhUiR3ADWWRe2RQDQxAgMBAAE=\n-----END PUBLIC KEY-----",
+  "ExeSha256": "19233532acda5b6cea91e70662157a34dac769f6a5755222fe04fbd8cd41019f",
+  "PvfSha256": "40c123c53e31009d7e0ff2568413221ccb4fdbb417f37387cbc730890fa51cb4",
+  "SettingsUrl": "https://62.234.38.71:8443/launcher/settings.json"
+}

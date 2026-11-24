@@ -1,0 +1,63 @@
+name: build-launcher
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  windows-launcher:
+    runs-on: windows-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Locate Flutter SDK root
+        shell: pwsh
+        run: |
+          $exe = (Get-Command flutter).Source
+          $root = Split-Path (Split-Path $exe -Parent) -Parent
+          "FLUTTER_SDK_ROOT=$root" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          flutter --version
+
+      - name: Enable Windows desktop and restore Dart packages
+        working-directory: launcher/Flutter
+        shell: cmd
+        run: |
+          flutter config --enable-windows-desktop
+          flutter pub get
+
+      - name: Build launcher bundle
+        shell: cmd
+        run: BUILD_FLUTTER.bat --flutter "%FLUTTER_SDK_ROOT%" --dotnet dotnet --profile-dir "runtime\launcher-input" --output "dist\PurpleMagic-1.0.12"
+
+      - name: Build portable single-file launcher
+        shell: cmd
+        run: BUILD_PORTABLE.bat --bundle "dist\PurpleMagic-1.0.12.zip" --output "dist\PurpleMagic.exe" --dotnet dotnet
+
+      - name: Show build receipt
+        shell: cmd
+        run: |
+          type runtime\flutter-build\build-receipt.json
+          type runtime\flutter-build\portable-receipt.json
+
+      - name: Upload launcher artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: purplemagic-launcher
+          if-no-files-found: error
+          path: |
+            dist\PurpleMagic-1.0.12.zip
+            dist\PurpleMagic.exe
+            dist\PurpleMagic.exe.sha256
